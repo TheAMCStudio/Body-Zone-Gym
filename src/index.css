@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-space: "Space Grotesk", sans-serif;
+
+  --color-matte-black: #0B0B0B;
+  --color-carbon-black: #121212;
+  --color-performance-red: #FF1E1E;
+  --color-metallic-silver: #B8B8B8;
+}
+
+@layer utilities {
+  /* Glowing effects */
+  .glow-red {
+    box-shadow: 0 0 20px rgba(255, 30, 30, 0.15);
+  }
+  .glow-red-heavy {
+    box-shadow: 0 0 35px rgba(255, 30, 30, 0.4);
+  }
+  .text-glow-red {
+    text-shadow: 0 0 10px rgba(255, 30, 30, 0.6);
+  }
+  /* Highlighted Text Trace / Outline Pattern */
+  .text-trace-white {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+  }
+  .text-trace-white-heavy {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.95);
+  }
+  .text-trace-red {
+    color: transparent;
+    -webkit-text-stroke: 1px #FF1E1E;
+  }
+  /* Noise Grain representation overlay */
+  .geometric-noise {
+    background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+  }
+}
+
+/* Custom scrollbar for ultra-premium dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0B0B;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #252525;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FF1E1E;
+}
+
+/* Custom selections */
+::selection {
+  background: #FF1E1E;
+  color: #FFFFFF;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+

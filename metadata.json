@@ -1,0 +1,6 @@
+{
+  "name": "Body Zone Gym & Fitness Center",
+  "description": "An ultra-premium, luxury fitness website for Body Zone Gym & Fitness Center Pattoki, built with custom micro-animations, high-end branding, and interactive fitness tools.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
