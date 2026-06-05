@@ -4,12 +4,36 @@
  */
 
 import React from 'react';
+import { motion } from 'motion/react';
 import { Dumbbell, Instagram, Facebook, Youtube, ShieldCheck, Mail, Phone, MapPin } from 'lucide-react';
 import LogoImg from '../assets/images/gym_logo_1780606156071.png';
 
 interface FooterProps {
   onLinkClick: (sectionId: string) => void;
 }
+
+const containerVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.65,
+      ease: "easeOut",
+      staggerChildren: 0.1,
+      delayChildren: 0.05
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
+};
 
 export default function Footer({ onLinkClick }: FooterProps) {
   const currentYear = new Date().getFullYear();
@@ -21,11 +45,17 @@ export default function Footer({ onLinkClick }: FooterProps) {
     >
       <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#FF1E1E]/5 blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <motion.div 
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-40px" }}
+        variants={containerVariants}
+      >
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 pb-12 border-b border-zinc-900/60">
           
           {/* Logo Brand info (4 columns) */}
-          <div className="md:col-span-4 space-y-6" id="footer-logo-block">
+          <motion.div variants={itemVariants} className="md:col-span-4 space-y-6" id="footer-logo-block">
             <div className="flex items-center gap-3 cursor-pointer group" onClick={() => onLinkClick('home')}>
               <div className="relative flex items-center h-12 w-12 bg-zinc-950 p-1 border border-zinc-900 rounded-none overflow-hidden group-hover:border-[#E10600]/45 transition-all duration-300">
                 <img
@@ -79,10 +109,10 @@ export default function Footer({ onLinkClick }: FooterProps) {
                 <Youtube className="w-4 h-4" />
               </a>
             </div>
-          </div>
+          </motion.div>
 
           {/* Links Section (3 columns) */}
-          <div className="md:col-span-3 space-y-4" id="footer-navigation-links">
+          <motion.div variants={itemVariants} className="md:col-span-3 space-y-4" id="footer-navigation-links">
             <h4 className="font-space text-[10px] text-white font-black uppercase tracking-widest leading-none">
               FACILITY NAVIGATION
             </h4>
@@ -144,24 +174,24 @@ export default function Footer({ onLinkClick }: FooterProps) {
                 </button>
               </li>
             </ul>
-          </div>
+          </motion.div>
 
           {/* Core Areas (3 columns) */}
-          <div className="md:col-span-2 space-y-4" id="footer-coaching-divisions">
+          <motion.div variants={itemVariants} className="md:col-span-2 space-y-4" id="footer-coaching-divisions">
             <h4 className="font-space text-[10px] text-white font-black uppercase tracking-widest leading-none">
               DIVISIONS
             </h4>
-            <ul className="space-y-2.5 font-sans text-xs text-zinc-400">
+            <ul className="space-y-2.5 font-sans text-xs text-zinc-400 font-medium">
               <li className="hover:text-white transition-colors">Hypertrophy Strength</li>
               <li className="hover:text-white transition-colors">Cardio Assault HIIT</li>
               <li className="hover:text-white transition-colors">Combat & MMA Deck</li>
               <li className="hover:text-white transition-colors">1-on-1 Personal Consulting</li>
               <li className="hover:text-white transition-colors">Core Active Stability</li>
             </ul>
-          </div>
+          </motion.div>
 
           {/* Quick Contact Block (3 columns) */}
-          <div className="md:col-span-3 space-y-4" id="footer-quick-coord">
+          <motion.div variants={itemVariants} className="md:col-span-3 space-y-4" id="footer-quick-coord">
             <h4 className="font-space text-[10px] text-white font-black uppercase tracking-widest leading-none">
               COORDINATES
             </h4>
@@ -179,21 +209,25 @@ export default function Footer({ onLinkClick }: FooterProps) {
                 <span>support@bodyzonepattoki.com</span>
               </li>
             </ul>
-          </div>
+          </motion.div>
 
         </div>
 
         {/* Closing details and legal */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-zinc-650" id="footer-legal">
+        <motion.div 
+          variants={itemVariants}
+          className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-zinc-650" 
+          id="footer-legal"
+        >
           <p>© {currentYear} Body Zone Gym Pattoki. All Rights Reserved. Built to elite performance standards.</p>
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1">
+          <div className="flex items-center gap-4 animate-pulse">
+            <span className="flex items-center gap-1 text-emerald-550">
               <ShieldCheck className="w-4 h-4 text-emerald-500" /> BIOSECURITY STANDARD CERTIFIED
             </span>
           </div>
-        </div>
+        </motion.div>
 
-      </div>
+      </motion.div>
     </footer>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   ArrowRight, 
@@ -22,6 +22,7 @@ import {
   Briefcase
 } from 'lucide-react';
 import GymInside1 from '../assets/images/gym_inside_1_1780606181422.png';
+import GymHeroBg from '../assets/images/gym_hero_bg_1780651454830.png';
 import { statsData, galleryData, transformationsData, testimonialsData, faqData, benefitsData } from '../data/gymData';
 
 interface HomeViewProps {
@@ -51,6 +52,26 @@ const itemVariants = {
   }
 };
 
+const fadeInUpVariants = {
+  hidden: { opacity: 0, y: 35 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] }
+  }
+};
+
+const staggerContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.05
+    }
+  }
+};
+
 // Button Spring Hover Micro-animations
 const playButtonHover = {
   scale: 1.04,
@@ -75,6 +96,17 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
 
   // FAQ Accordion expanded state management
   const [expandedFaqId, setExpandedFaqId] = useState<string | null>(null);
+
+  // Dynamic state tracking scroll for professional parallax animation
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Filter gallery items
   const filteredGallery = activeGalleryTab === 'all' 
@@ -106,15 +138,18 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
         {/* Dynamic Background Layout with High-Fidelity Parallax Overlay */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           <motion.div 
-            initial={{ scale: 1.18, opacity: 0 }}
-            animate={{ scale: 1.04, opacity: 0.45 }}
-            transition={{ duration: 2.5, ease: "easeOut" }}
-            className="w-full h-full bg-cover bg-center filter grayscale brightness-[60%] select-none scale-105"
-            style={{ backgroundImage: `url(${GymInside1})` }}
+            initial={{ scale: 1.15, opacity: 0 }}
+            animate={{ scale: 1.02, opacity: 0.82 }}
+            style={{ y: scrollY * 0.4, backgroundImage: `url(${GymHeroBg})` }}
+            transition={{ 
+              scale: { duration: 2.2, ease: "easeOut" },
+              opacity: { duration: 1.4, ease: "easeOut" }
+            }}
+            className="w-full h-full bg-cover bg-center filter saturate-[1.15] brightness-[65%] contrast-[1.10] select-none"
           />
           {/* Layered vignette overlays for athletic contrast */}
-          <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/85 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent" />
           
           {/* Cyberpunk Grid Mesh Overlay background */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(225,6,0,0.12),rgba(0,0,0,0))]" />
@@ -250,27 +285,33 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
           
-          <div className="text-left mb-16 max-w-3xl">
-            <span className="font-space font-black text-[#E10600] text-xs tracking-widest uppercase">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainerVariants}
+            className="text-left mb-16 max-w-3xl"
+          >
+            <motion.span variants={fadeInUpVariants} className="font-space font-black text-[#E10600] text-xs tracking-widest uppercase block">
               THE REPLICABLE TRANSFORMATION BLUEPRINT
-            </span>
-            <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-white uppercase italic tracking-tight mt-3">
+            </motion.span>
+            <motion.h2 variants={fadeInUpVariants} className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-white uppercase italic tracking-tight mt-3">
               THE BODY ZONE <span className="text-[#E10600] not-italic">METHOD</span>
-            </h2>
-            <p className="font-sans text-xs sm:text-sm text-zinc-400 mt-4 leading-relaxed">
+            </motion.h2>
+            <motion.p variants={fadeInUpVariants} className="font-sans text-xs sm:text-sm text-zinc-400 mt-4 leading-relaxed">
               We reject randomized fitness fads. Every elite athlete and local lifter undergoes a structured, progress-led biological loop.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           {/* Interactive responsive timeline connection */}
           <div className="relative border-l-2 border-zinc-900 pl-6 sm:pl-10 space-y-16">
             
             {/* Step 1 */}
             <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.65 }}
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
               className="relative group text-left"
             >
               <div className="absolute -left-[35px] sm:-left-[51px] top-0 w-6 h-6 sm:w-10 sm:h-10 rounded-none bg-[#0B0B0B] border-2 border-[#E10600] flex items-center justify-center font-display font-black text-xs sm:text-sm text-glow-red group-hover:bg-[#E10600] transition-colors duration-350">
@@ -291,10 +332,10 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
 
             {/* Step 2 */}
             <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.65, delay: 0.1 }}
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.75, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="relative group text-left"
             >
               <div className="absolute -left-[35px] sm:-left-[51px] top-0 w-6 h-6 sm:w-10 sm:h-10 rounded-none bg-[#0B0B0B] border-2 border-[#E10600] flex items-center justify-center font-display font-black text-xs sm:text-sm text-glow-red group-hover:bg-[#E10600] transition-colors duration-350">
@@ -315,10 +356,10 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
 
             {/* Step 3 */}
             <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.65, delay: 0.2 }}
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.75, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="relative group text-left"
             >
               <div className="absolute -left-[35px] sm:-left-[51px] top-0 w-6 h-6 sm:w-10 sm:h-10 rounded-none bg-[#0B0B0B] border-2 border-[#E10600] flex items-center justify-center font-display font-black text-xs sm:text-sm text-glow-red group-hover:bg-[#E10600] transition-colors duration-350">
@@ -339,10 +380,10 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
 
             {/* Step 4 */}
             <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.65, delay: 0.3 }}
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.75, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="relative group text-left"
             >
               <div className="absolute -left-[35px] sm:-left-[51px] top-0 w-6 h-6 sm:w-10 sm:h-10 rounded-none bg-[#0B0B0B] border-2 border-[#E10600] flex items-center justify-center font-display font-black text-xs sm:text-sm text-glow-red group-hover:bg-[#E10600] transition-colors duration-350">
@@ -372,18 +413,24 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
         <div className="absolute top-1/2 right-1/4 w-80 h-80 rounded-full bg-[#E10600]/3 blur-[140px] pointer-events-none" />
 
         {/* Section Heading with staggered reveal viewport triggers */}
-        <div className="text-left mb-16 max-w-3xl">
-          <span className="font-space font-black text-[#E10600] text-xs tracking-widest uppercase">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={staggerContainerVariants}
+          className="text-left mb-16 max-w-3xl"
+        >
+          <motion.span variants={fadeInUpVariants} className="font-space font-black text-[#E10600] text-xs tracking-widest uppercase block">
             WHY BODY ZONE PATTOKI REIGNS SUPREME
-          </span>
-          <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-white uppercase italic tracking-tight mt-3">
+          </motion.span>
+          <motion.h2 variants={fadeInUpVariants} className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-white uppercase italic tracking-tight mt-3">
             BIOMECHANICAL <span className="text-[#E10600] not-italic">PERFORMANCE</span> DESIGN
-          </h2>
-          <p className="font-sans text-xs sm:text-sm text-[#B0B0B0] mt-3 leading-relaxed">
+          </motion.h2>
+          <motion.p variants={fadeInUpVariants} className="font-sans text-xs sm:text-sm text-[#B0B0B0] mt-3 leading-relaxed">
             Our gym floor has been engineered for maximum physical progression. 
             We replace useless gimmicks with pure scientific biomechanics designed to stimulate exact target fibers smoothly.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Grid of 6 Core advantages with scroll reveal staggered triggers */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -429,19 +476,25 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             {/* Visual Callout block (5 cols) */}
-            <div className="lg:col-span-5 text-left space-y-6">
-              <span className="font-space font-black text-[#E10600] text-xs tracking-widest uppercase block">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={staggerContainerVariants}
+              className="lg:col-span-5 text-left space-y-6"
+            >
+              <motion.span variants={fadeInUpVariants} className="font-space font-black text-[#E10600] text-xs tracking-widest uppercase block">
                 FACILITY OPERATIONAL CODES
-              </span>
-              <h2 className="font-display font-black text-3xl sm:text-5xl text-white uppercase italic tracking-tight leading-none">
+              </motion.span>
+              <motion.h2 variants={fadeInUpVariants} className="font-display font-black text-3xl sm:text-5xl text-white uppercase italic tracking-tight leading-none">
                 THE PRESTIGE <br />
                 <span className="text-[#E10600] not-italic">LIFESTYLE MATRIX</span>
-              </h2>
-              <p className="font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed">
+              </motion.h2>
+              <motion.p variants={fadeInUpVariants} className="font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed">
                 Body Zone stands alone in Pattoki not only because of heavier weights but because we enforce strict sanitary, support, and community standards.
-              </p>
+              </motion.p>
 
-              <div className="space-y-4">
+              <motion.div variants={fadeInUpVariants} className="space-y-4">
                 <div className="flex gap-3 items-start">
                   <div className="p-1 px-2 bg-zinc-900 text-glow-red font-space text-[10px] font-black border border-zinc-850">01</div>
                   <div>
@@ -456,13 +509,17 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
                     <p className="font-sans text-xs text-zinc-500">Custom mechanical key locks combined with continuous security cameras keep belongings secure.</p>
                   </div>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Layout specifications display grid (7 cols) */}
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
               
               <motion.div 
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.65, delay: 0.05, ease: "easeOut" }}
                 whileHover={{ y: -4 }}
                 className="p-6 bg-[#121212] border border-zinc-900 relative space-y-3"
               >
@@ -472,6 +529,10 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
               </motion.div>
 
               <motion.div 
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.65, delay: 0.15, ease: "easeOut" }}
                 whileHover={{ y: -4 }}
                 className="p-6 bg-[#121212] border border-zinc-900 relative space-y-3"
               >
@@ -481,6 +542,10 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
               </motion.div>
 
               <motion.div 
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.65, delay: 0.25, ease: "easeOut" }}
                 whileHover={{ y: -4 }}
                 className="p-6 bg-[#121212] border border-zinc-900 relative space-y-3"
               >
@@ -490,6 +555,10 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
               </motion.div>
 
               <motion.div 
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.65, delay: 0.35, ease: "easeOut" }}
                 whileHover={{ y: -4 }}
                 className="p-6 bg-[#121212] border border-zinc-900 relative space-y-3"
               >
@@ -510,33 +579,39 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
       <section id="gallery-showcase" className="py-24 bg-[#090909] border-b border-zinc-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainerVariants}
+            className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6"
+          >
             <div className="text-left">
-              <span className="font-space font-black text-[#E10600] text-xs tracking-widest uppercaseblock">
+              <motion.span variants={fadeInUpVariants} className="font-space font-black text-[#E10600] text-xs tracking-widest uppercase block">
                 DIGITAL TOUR OF OUR ARENA
-              </span>
-              <h2 className="font-display font-black text-3xl sm:text-5xl text-white uppercase italic tracking-tight mt-2">
+              </motion.span>
+              <motion.h2 variants={fadeInUpVariants} className="font-display font-black text-3xl sm:text-5xl text-white uppercase italic tracking-tight mt-2">
                 THE <span className="text-[#E10600] not-italic">REAL SHOWROOM</span> FLOOR
-              </h2>
+              </motion.h2>
             </div>
 
-            {/* Filter Tabs on homepage */}
-            <div className="flex flex-wrap gap-2">
+            {/* Filter Tabs on homepage - configured inline, scrollable on very narrow screens without dropping cardio below */}
+            <motion.div variants={fadeInUpVariants} className="flex flex-row md:flex-wrap items-center overflow-x-auto whitespace-nowrap scrollbar-none gap-2 max-w-full pb-2 md:pb-0">
               {['all', 'facilities', 'weights', 'cardio'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveGalleryTab(tab)}
-                  className={`px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 rounded-none cursor-pointer ${
+                  className={`px-3 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-semibold uppercase tracking-wider transition-all duration-300 rounded-none cursor-pointer shrink-0 ${
                     activeGalleryTab === tab
                       ? 'text-white bg-[#E10600] scale-102 border-b-2 border-white font-black'
-                      : 'text-zinc-400 bg-zinc-950/80 border border-zinc-900 hover:text-white hover:bg-zinc-900/60'
+                      : 'text-zinc-300 bg-zinc-950/80 border border-zinc-950 hover:text-white hover:bg-zinc-900/60'
                   }`}
                 >
                   {tab === 'all' ? 'All Areas' : tab.charAt(0).toUpperCase() + tab.slice(1)}
                 </button>
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Bento layout structure with slide-up micro-animations */}
           <motion.div 
@@ -586,20 +661,32 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
       <section className="py-24 sm:py-32 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="absolute top-1/2 left-1/2 w-96 h-96 rounded-full bg-[#E10600]/3 blur-[200px] pointer-events-none" />
 
-        <div className="text-center mb-16">
-          <span className="font-space font-black text-[#E10600] text-xs tracking-widest uppercase block mb-3">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={staggerContainerVariants}
+          className="text-center mb-16"
+        >
+          <motion.span variants={fadeInUpVariants} className="font-space font-black text-[#E10600] text-xs tracking-widest uppercase block mb-3">
             EVIDENCE-BASED TRANSFORMATION LOGS
-          </span>
-          <h2 className="font-display font-black text-3xl sm:text-5xl text-white uppercase italic tracking-tight">
+          </motion.span>
+          <motion.h2 variants={fadeInUpVariants} className="font-display font-black text-3xl sm:text-5xl text-white uppercase italic tracking-tight">
             BIOLOGIC <span className="text-[#E10600] not-italic">RECOMPOSITION</span>
-          </h2>
-          <p className="font-sans text-xs sm:text-sm text-zinc-400 max-w-xl mx-auto mt-3">
+          </motion.h2>
+          <motion.p variants={fadeInUpVariants} className="font-sans text-xs sm:text-sm text-zinc-400 max-w-xl mx-auto mt-3">
             Real clients who trusted our meticulous strength overload structure in Pattoki.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Dynamic Comparison Panel */}
-        <div className="bg-[#121212]/95 border border-zinc-900 p-6 sm:p-10 relative rounded-none">
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="bg-[#121212]/95 border border-zinc-900 p-6 sm:p-10 relative rounded-none"
+        >
           
           {/* Back/Next selector triggers */}
           <div className="absolute top-5 right-5 flex gap-2">
@@ -712,7 +799,7 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
               </div>
             </motion.div>
           </AnimatePresence>
-        </div>
+        </motion.div>
       </section>
 
 
@@ -720,14 +807,20 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
       <section className="py-24 bg-[#090909] border-t border-zinc-900 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center mb-16">
-            <span className="font-space font-black text-[#E10600] text-xs tracking-widest uppercase block mb-3">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainerVariants}
+            className="text-center mb-16"
+          >
+            <motion.span variants={fadeInUpVariants} className="font-space font-black text-[#E10600] text-xs tracking-widest uppercase block mb-3">
               EXECUTIVE USER STATEMENTS
-            </span>
-            <h2 className="font-display font-black text-3xl sm:text-5xl text-white uppercase italic tracking-tight">
+            </motion.span>
+            <motion.h2 variants={fadeInUpVariants} className="font-display font-black text-3xl sm:text-5xl text-white uppercase italic tracking-tight">
               PATTOKI'S <span className="text-[#E10600] not-italic">VERIFIED VOICE</span>
-            </h2>
-          </div>
+            </motion.h2>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
             {testimonialsData.map((test, index) => (
@@ -779,25 +872,35 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
       {/* 9. DYNAMIC FAQ ACCORDION */}
       <section className="py-24 sm:py-32 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative text-left">
         
-        <div className="text-center mb-16">
-          <span className="font-space font-black text-[#E10600] text-xs tracking-widest uppercase block mb-3">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={staggerContainerVariants}
+          className="text-center mb-16"
+        >
+          <motion.span variants={fadeInUpVariants} className="font-space font-black text-[#E10600] text-xs tracking-widest uppercase block mb-3">
             GOT ANY BURNING INQUIRIES?
-          </span>
-          <h2 className="font-display font-black text-3xl sm:text-5xl text-white uppercase italic tracking-tight">
+          </motion.span>
+          <motion.h2 variants={fadeInUpVariants} className="font-display font-black text-3xl sm:text-5xl text-white uppercase italic tracking-tight">
             ACCORDION <span className="text-[#E10600] not-italic">FAQ FINDER</span>
-          </h2>
-          <p className="font-sans text-xs sm:text-sm text-[#B0B0B0] max-w-xl mx-auto mt-3">
+          </motion.h2>
+          <motion.p variants={fadeInUpVariants} className="font-sans text-xs sm:text-sm text-[#B0B0B0] max-w-xl mx-auto mt-3">
             Quick responses built dynamically on setups, scheduling, equipment access, and coaching divisions.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Collapsible FAQ containers */}
         <div className="space-y-4">
           {faqData.map((faq, idx) => {
             const isExpanded = expandedFaqId === faq.id;
             return (
-              <div 
+              <motion.div 
                 key={faq.id}
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.55, delay: idx * 0.08, ease: "easeOut" }}
                 className="bg-[#121212]/80 border border-zinc-900 hover:border-[#E10600]/30 transition-all duration-300 rounded-none"
               >
                 <button
@@ -838,7 +941,7 @@ export default function HomeView({ onJoinClick }: HomeViewProps) {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             );
           })}
         </div>

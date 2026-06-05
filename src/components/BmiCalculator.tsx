@@ -154,7 +154,14 @@ export default function BmiCalculator() {
         </motion.div>
 
         {/* BMI Calculator dynamic dashboard layout */}
-        <div id="bmi-dashboard" className="max-w-5xl mx-auto rounded-none bg-[#121212]/90 border border-zinc-900 shadow-[0_25px_60px_rgba(0,0,0,0.85)] grid grid-cols-1 lg:grid-cols-12 items-stretch">
+        <motion.div 
+          id="bmi-dashboard" 
+          initial={{ opacity: 0, y: 55 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.75, ease: "easeOut" }}
+          className="max-w-5xl mx-auto rounded-none bg-[#121212]/90 border border-zinc-900 shadow-[0_25px_60px_rgba(0,0,0,0.85)] grid grid-cols-1 lg:grid-cols-12 items-stretch"
+        >
           
           {/* Controls Split Panel (7 columns) */}
           <div className="p-6 sm:p-10 lg:col-span-7 flex flex-col justify-between text-left border-b lg:border-b-0 lg:border-r border-zinc-900" id="bmi-input-split">
@@ -408,7 +415,7 @@ export default function BmiCalculator() {
 
           </div>
 
-        </div>
+        </motion.div>
       </div>
     </section>
   );
